@@ -86,11 +86,12 @@
             line-height: 1.6;
         }
         
-        .link-meet, .link-forms, .link-login {
+        .link-meet, .link-forms {
             display: inline-block;
             margin-top: 20px;
             padding: 15px 40px;
             background-color: white;
+            color: #667eea;
             border: none;
             border-radius: 5px;
             font-weight: bold;
@@ -100,20 +101,7 @@
             cursor: pointer;
         }
         
-        .link-login {
-            color: #ea4335;
-        }
-        
-        .link-meet {
-            color: #667eea;
-            display: none;
-        }
-        
-        .link-meet.visivel {
-            display: inline-block;
-        }
-        
-        .link-login:hover, .link-meet:hover, .link-forms:hover {
+        .link-meet:hover, .link-forms:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
@@ -201,42 +189,10 @@
     </div>
 
     <script>
-        let loginFeito = false;
         let meetAberto = false;
         let provaIniciada = false;
         
-        function abrirLogin() {
-            // Abre a página de login do Google em nova janela
-            window.open('https://accounts.google.com/signin', '_blank', 'width=800,height=600');
-            
-            // Aguarda 2 segundos e mostra o botão do Meet
-            setTimeout(() => {
-                const confirmouLogin = confirm(
-                    '✓ Login realizado?\n\n' +
-                    'Após fazer login no Google, clique em OK para continuar.\n\n' +
-                    'Se ainda não fez login, clique em Cancelar e faça o login primeiro.'
-                );
-                
-                if (confirmouLogin) {
-                    loginFeito = true;
-                    document.getElementById('btnMeet').classList.add('visivel');
-                    document.getElementById('passo0').style.opacity = '1';
-                    document.getElementById('passo1').style.opacity = '1';
-                    
-                    // Atualiza o título
-                    document.querySelector('.aviso-meet h2').textContent = '📹 Videoconferência';
-                    document.querySelector('.aviso-meet p:nth-of-type(2)').innerHTML = 
-                        '<strong>Próximo passo:</strong> Entre no Google Meet clicando no botão azul.';
-                }
-            }, 3000);
-        }
-        
         function abrirMeet() {
-            if (!loginFeito) {
-                alert('⚠️ Você precisa fazer login no Google primeiro!');
-                return;
-            }
-            
             // Abre o Meet em nova janela
             window.open('https://meet.google.com/ppj-mwvr-mbe', '_blank', 'width=1200,height=800');
             
@@ -247,21 +203,17 @@
             document.getElementById('btnForms').classList.add('visivel');
             
             // Atualiza as instruções
+            document.getElementById('passo1').style.opacity = '1';
             document.getElementById('passo2').style.opacity = '1';
             document.getElementById('passo3').style.opacity = '1';
             document.getElementById('passo4').style.opacity = '1';
             
-            // Atualiza o texto
+            // Atualiza o texto do primeiro parágrafo
             document.querySelector('.aviso-meet p:nth-of-type(2)').innerHTML = 
                 '<strong>Próximo passo:</strong> Após entrar no Meet e receber as instruções, clique no botão verde abaixo.';
         }
         
         function abrirForms() {
-            if (!loginFeito) {
-                alert('⚠️ Você precisa fazer login no Google primeiro!');
-                return;
-            }
-            
             if (!meetAberto) {
                 alert('⚠️ Você precisa entrar no Google Meet primeiro!');
                 return;
@@ -270,7 +222,6 @@
             const confirmar = confirm(
                 'Iniciar a prova agora?\n\n' +
                 'Certifique-se de que:\n' +
-                '✓ Você fez login no Google\n' +
                 '✓ Você entrou no Google Meet\n' +
                 '✓ Sua câmera está ligada\n' +
                 '✓ Recebeu autorização do professor\n\n' +
