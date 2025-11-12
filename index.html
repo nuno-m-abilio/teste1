@@ -81,23 +81,33 @@
             line-height: 1.6;
         }
         
-        .link-meet {
+        .link-meet, .link-forms {
             display: inline-block;
             margin-top: 20px;
             padding: 15px 40px;
             background-color: white;
             color: #667eea;
-            text-decoration: none;
+            border: none;
             border-radius: 5px;
             font-weight: bold;
             font-size: 18px;
             transition: all 0.3s;
             box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
         }
         
-        .link-meet:hover {
+        .link-meet:hover, .link-forms:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .link-forms {
+            color: #34a853;
+            display: none;
+        }
+        
+        .link-forms.visivel {
+            display: inline-block;
         }
         
         .instrucoes {
@@ -141,28 +151,86 @@
                 <p>Bem-vindo(a) ao ambiente de prova online!</p>
                 <p><strong>Primeiro passo:</strong> Entre no Google Meet clicando no botão abaixo.</p>
                 
-                <a href="https://meet.google.com/ppj-mwvr-mbe" target="_blank" class="link-meet">
+                <button class="link-meet" onclick="abrirMeet()">
                     🎥 Entrar no Google Meet
-                </a>
+                </button>
+                
+                <button class="link-forms" id="btnForms" onclick="abrirForms()">
+                    📝 Abrir Formulário da Prova
+                </button>
                 
                 <div class="instrucoes">
                     <p style="font-weight: bold; margin-bottom: 15px;">⚠️ Instruções Importantes:</p>
                     <ul>
-                        <li>✓ Mantenha sua câmera LIGADA durante toda a prova</li>
-                        <li>✓ Aguarde as instruções do professor no Meet</li>
-                        <li>✓ Após autorização, clique na aba "📝 Prova" acima</li>
-                        <li>✓ NÃO feche a janela do Meet</li>
+                        <li id="passo1">✓ Clique em "Entrar no Google Meet"</li>
+                        <li id="passo2" style="opacity: 0.5;">✓ Mantenha sua câmera LIGADA</li>
+                        <li id="passo3" style="opacity: 0.5;">✓ Aguarde as instruções do professor</li>
+                        <li id="passo4" style="opacity: 0.5;">✓ Clique em "Abrir Formulário da Prova"</li>
                     </ul>
                 </div>
             </div>
         </div>
         
         <div class="conteudo-aba" id="aba-prova">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform?usp=dialog"></iframe>
+            <div class="aviso-meet" style="background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);">
+                <h2>📝 Prova em Andamento</h2>
+                <p>O formulário da prova foi aberto em uma nova janela.</p>
+                <p style="font-size: 14px; margin-top: 20px; opacity: 0.9;">
+                    ⚠️ Não feche as janelas do Meet e do Formulário<br>
+                    ⚠️ Sua câmera deve permanecer ligada durante toda a prova
+                </p>
+            </div>
         </div>
     </div>
 
     <script>
+        let meetAberto = false;
+        
+        function abrirMeet() {
+            // Abre o Meet em nova janela
+            window.open('https://meet.google.com/ppj-mwvr-mbe', '_blank', 'width=1200,height=800');
+            
+            // Marca que o Meet foi aberto
+            meetAberto = true;
+            
+            // Mostra o botão do formulário
+            document.getElementById('btnForms').classList.add('visivel');
+            
+            // Atualiza as instruções
+            document.getElementById('passo1').style.opacity = '1';
+            document.getElementById('passo2').style.opacity = '1';
+            document.getElementById('passo3').style.opacity = '1';
+            document.getElementById('passo4').style.opacity = '1';
+            
+            // Atualiza o texto do primeiro parágrafo
+            document.querySelector('.aviso-meet p:nth-of-type(2)').innerHTML = 
+                '<strong>Próximo passo:</strong> Após entrar no Meet e receber as instruções, clique no botão verde abaixo.';
+        }
+        
+        function abrirForms() {
+            if (!meetAberto) {
+                alert('⚠️ Você precisa entrar no Google Meet primeiro!');
+                return;
+            }
+            
+            const confirmar = confirm(
+                'Iniciar a prova agora?\n\n' +
+                'Certifique-se de que:\n' +
+                '✓ Você entrou no Google Meet\n' +
+                '✓ Sua câmera está ligada\n' +
+                '✓ Recebeu autorização do professor\n\n' +
+                'O formulário será aberto em uma nova janela.'
+            );
+            
+            if (confirmar) {
+                // Abre o Forms em nova janela
+                window.open('https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform', '_blank', 'width=1000,height=800');
+                
+                // Muda para a aba de "Prova"
+                trocarAba('prova');
+            }
+        }
+        
         function trocarAba(aba) {
             // Remove classe ativa de todos
             document.querySelectorAll('.aba-botao').forEach(btn => {
@@ -177,23 +245,8 @@
                 document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
                 document.getElementById('aba-meet').classList.add('ativa-aba');
             } else if (aba === 'prova') {
-                // Confirmação antes de abrir a prova
-                const confirmar = confirm(
-                    'Iniciar a prova agora?\n\n' +
-                    'Certifique-se de que:\n' +
-                    '✓ Você entrou no Google Meet\n' +
-                    '✓ Sua câmera está ligada\n' +
-                    '✓ Recebeu autorização do professor'
-                );
-                
-                if (confirmar) {
-                    document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
-                    document.getElementById('aba-prova').classList.add('ativa-aba');
-                } else {
-                    // Mantém na aba do Meet
-                    document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
-                    document.getElementById('aba-meet').classList.add('ativa-aba');
-                }
+                document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
+                document.getElementById('aba-prova').classList.add('ativa-aba');
             }
         }
         
