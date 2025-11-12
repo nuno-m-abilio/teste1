@@ -44,8 +44,13 @@
             background-color: #1a73e8;
         }
         
-        .aba-botao:hover {
+        .aba-botao:hover:not(.desabilitada) {
             background-color: #1670d8;
+        }
+        
+        .aba-botao.desabilitada {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
         
         .conteudo-aba {
@@ -140,7 +145,7 @@
             <button class="aba-botao ativa-aba" onclick="trocarAba('meet')">
                 📹 Google Meet
             </button>
-            <button class="aba-botao" onclick="trocarAba('prova')">
+            <button class="aba-botao desabilitada" id="abaProva" onclick="trocarAba('prova')">
                 📝 Prova
             </button>
         </div>
@@ -185,6 +190,7 @@
 
     <script>
         let meetAberto = false;
+        let provaIniciada = false;
         
         function abrirMeet() {
             // Abre o Meet em nova janela
@@ -223,6 +229,12 @@
             );
             
             if (confirmar) {
+                // Marca que a prova foi iniciada
+                provaIniciada = true;
+                
+                // Habilita a aba "Prova"
+                document.getElementById('abaProva').classList.remove('desabilitada');
+                
                 // Abre o Forms em nova janela
                 window.open('https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform', '_blank', 'width=1000,height=800');
                 
@@ -232,6 +244,12 @@
         }
         
         function trocarAba(aba) {
+            // Se tentar ir para a aba Prova sem ter iniciado, bloqueia
+            if (aba === 'prova' && !provaIniciada) {
+                alert('⚠️ Você precisa clicar no botão "Abrir Formulário da Prova" primeiro!');
+                return;
+            }
+            
             // Remove classe ativa de todos
             document.querySelectorAll('.aba-botao').forEach(btn => {
                 btn.classList.remove('ativa-aba');
