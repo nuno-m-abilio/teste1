@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exame Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .etapa {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        
+        .etapa.ativa {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        iframe {
+            width: 100%;
+            flex: 1;
+            border: none;
+        }
+        
+        .botao-container {
+            padding: 15px;
+            background-color: #1a73e8;
+            text-align: center;
+        }
+        
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: white;
+            color: #1a73e8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .info {
+            padding: 10px;
+            background-color: #4285f4;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        /* Versão Simultânea */
+        .simultaneo {
+            display: none;
+            height: 100vh;
+        }
+        
+        .simultaneo.ativa {
+            display: flex;
+        }
+        
+        .painel {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .painel-titulo {
+            padding: 10px;
+            background-color: #1a73e8;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- MODO SEQUENCIAL -->
+    <div class="container" id="modoSequencial">
+        <!-- Etapa 1: Google Meet -->
+        <div class="etapa ativa" id="etapa1">
+            <div class="info">
+                Etapa 1: Videoconferência - Aguarde as instruções do professor
+            </div>
+            <iframe 
+                id="meetFrame"
+                src="URL_DO_MEET_AQUI"
+                allow="camera; microphone; display-capture"
+                allowfullscreen>
+            </iframe>
+            <div class="botao-container">
+                <button onclick="avancarParaForms()" id="btnAvancar">
+                    Iniciar Prova →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Etapa 2: Google Forms -->
+        <div class="etapa" id="etapa2">
+            <div class="info">
+                Etapa 2: Prova - Responda todas as questões
+            </div>
+            <iframe 
+                id="formsFrame"
+                src="URL_DO_FORMS_AQUI">
+            </iframe>
+        </div>
+    </div>
+    
+    <!-- MODO SIMULTÂNEO (alternativa) -->
+    <div class="simultaneo" id="modoSimultaneo">
+        <div class="painel">
+            <div class="painel-titulo">Google Meet</div>
+            <iframe 
+                src="URL_DO_MEET_AQUI"
+                allow="camera; microphone; display-capture"
+                allowfullscreen>
+            </iframe>
+        </div>
+        <div class="painel">
+            <div class="painel-titulo">Prova</div>
+            <iframe src="URL_DO_FORMS_AQUI"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Escolha o modo: 'sequencial' ou 'simultaneo'
+        const MODO = 'sequencial'; // Altere para 'simultaneo' se preferir
+        
+        // Controla qual modo mostrar
+        if (MODO === 'simultaneo') {
+            document.getElementById('modoSequencial').style.display = 'none';
+            document.getElementById('modoSimultaneo').classList.add('ativa');
+        }
+        
+        // Função para avançar do Meet para o Forms
+        function avancarParaForms() {
+            const etapa1 = document.getElementById('etapa1');
+            const etapa2 = document.getElementById('etapa2');
+            const btnAvancar = document.getElementById('btnAvancar');
+            
+            // Confirmação antes de avançar
+            const confirmar = confirm('Tem certeza que deseja iniciar a prova? Não será possível voltar ao Meet.');
+            
+            if (confirmar) {
+                etapa1.classList.remove('ativa');
+                etapa2.classList.add('ativa');
+            }
+        }
+        
+        // Bloqueia o botão direito (opcional)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        // Bloqueia algumas teclas de atalho (opcional)
+        document.addEventListener('keydown', function(e) {
+            // Bloqueia F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
