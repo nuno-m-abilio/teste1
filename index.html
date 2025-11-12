@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Exame Online</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,9 +29,9 @@ body { font-family: Arial, sans-serif; overflow: hidden; background-color: #f0f0
 .conteudo-aba { flex: 1; display: none; }
 .conteudo-aba.ativa-aba { display: block; }
 
-.aviso {
+.aviso-meet {
   padding: 30px;
-  background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-align: center;
   min-height: 100%;
@@ -40,141 +40,187 @@ body { font-family: Arial, sans-serif; overflow: hidden; background-color: #f0f0
   justify-content: center;
   align-items: center;
 }
-.aviso h2 { margin-bottom: 20px; font-size: 28px; }
-.aviso p { margin-bottom: 15px; font-size: 16px; max-width: 600px; line-height: 1.6; }
+.aviso-meet h2 { margin-bottom: 20px; font-size: 28px; }
+.aviso-meet p { margin-bottom: 15px; font-size: 16px; max-width: 600px; line-height: 1.6; }
 
 .botao {
   display: inline-block;
-  margin-top: 20px;
-  padding: 15px 40px;
+  margin-top: 12px;
+  padding: 14px 34px;
   background-color: white;
-  color: #34a853;
+  color: #667eea;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 18px;
-  transition: all 0.3s;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  font-size: 16px;
+  transition: all 0.18s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
   cursor: pointer;
 }
-.botao:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.botao:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+.botao.desabilitado { opacity: 0.55; cursor: not-allowed; }
 
-.botao-meet {
-  color: #667eea;
-  background-color: white;
-}
-.botao-meet:hover { color: #5a5ae0; }
+.botao-forms { color: #34a853; display: none; }
+.botao-forms.visivel { display: inline-block; }
 
-.instrucoes {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  max-width: 500px;
-}
+.instrucoes { margin-top: 22px; padding: 18px; background-color: rgba(255,255,255,0.08); border-radius: 10px; max-width: 520px; }
 .instrucoes ul { text-align: left; list-style-position: inside; }
-.instrucoes li { margin: 10px 0; }
+.instrucoes li { margin: 8px 0; }
 
 iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
+  <div class="abas">
+    <div class="menu-abas">
+      <button class="aba-botao ativa-aba" onclick="trocarAba('login')">🔐 Login (Documento)</button>
+      <button class="aba-botao desabilitada" id="abaMeetBtn" onclick="trocarAba('meet')">📹 Google Meet</button>
+      <button class="aba-botao desabilitada" id="abaProvaBtn" onclick="trocarAba('prova')">📝 Prova</button>
+    </div>
 
-<div class="abas">
-  <div class="menu-abas">
-    <button class="aba-botao ativa-aba" onclick="trocarAba('prova')">📝 Formulário</button>
-    <button class="aba-botao desabilitada" id="abaMeet" onclick="trocarAba('meet')">📹 Google Meet</button>
-  </div>
+    <!-- ABA LOGIN (USAR O DOC PARA FORÇAR LOGIN) -->
+    <div class="conteudo-aba ativa-aba" id="aba-login">
+      <div class="aviso-meet">
+        <h2>🔐 Primeiro: Acesso ao Google (Documento)</h2>
+        <p>Para iniciar, abra o documento que fará você autenticar na sua conta Google. Isso evita que você precise autenticar diretamente no Meet/Forms dentro do SEB.</p>
+        <p><strong>Observação:</strong> o documento serve apenas para forçar o login. Não feche a janela do navegador enquanto for orientado pelo professor.</p>
 
-  <!-- ABA FORMULÁRIO -->
-  <div class="conteudo-aba ativa-aba" id="aba-prova">
-    <div class="aviso" style="background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);">
-      <h2>📝 Acesso ao Formulário</h2>
-      <p>Primeiro, você deve acessar o formulário da prova. Isso fará com que você entre na sua conta Google.</p>
-      <p><strong>Importante:</strong> Inicialmente o formulário estará bloqueado e <u>não aceitará respostas</u>. Isso é normal!</p>
-      <p>Depois de acessar, volte aqui e clique em “Entrar no Google Meet”.</p>
-      <button class="botao" onclick="abrirForms()">📝 Abrir Formulário</button>
+        <button class="botao" id="btnLoginDoc" onclick="abrirDoc()">📄 Abrir Documento (login)</button>
 
-      <div class="instrucoes">
-        <p style="font-weight: bold; margin-bottom: 15px;">⚠️ Instruções Importantes:</p>
-        <ul>
-          <li>✓ Acesse o formulário e faça login na sua conta Google.</li>
-          <li>✓ O formulário pode exibir “Não está aceitando respostas”.</li>
-          <li>✓ Isso será liberado durante o exame.</li>
-          <li>✓ Após o login, clique em “Entrar no Google Meet”.</li>
-        </ul>
+        <div class="instrucoes">
+          <p style="font-weight:bold; margin-bottom:10px;">⚠️ Passos:</p>
+          <ul>
+            <li id="p1" style="opacity:0.5;">Abra o documento e, se necessário, faça login na sua conta Google.</li>
+            <li id="p2" style="opacity:0.5;">Volte a esta página e clique em "Entrar no Google Meet".</li>
+            <li id="p3" style="opacity:0.5;">Aguarde instruções do professor no Meet e, quando liberado, clique em "Abrir Formulário da Prova".</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA MEET -->
+    <div class="conteudo-aba" id="aba-meet">
+      <div class="aviso-meet" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <h2>📹 Google Meet</h2>
+        <p>Após fazer o login através do documento, entre no Meet para ouvir as instruções do examinador.</p>
+        <button class="botao" id="btnMeet" onclick="abrirMeet()">🎥 Entrar no Google Meet</button>
+
+        <div class="instrucoes">
+          <ul>
+            <li>Mantenha a câmera ligada enquanto estiver na prova.</li>
+            <li>Não compartilhe links: a prova só estará disponível quando o professor liberar.</li>
+            <li>Quando o examinador liberar, você deverá atualizar o formulário que abriu no passo 1.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABA PROVA -->
+    <div class="conteudo-aba" id="aba-prova">
+      <div class="aviso-meet" style="background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);">
+        <h2>📝 Formulário da Prova</h2>
+        <p>O formulário será aberto em nova janela. Se estiver bloqueado inicialmente, aguarde o aviso no Meet e então atualize a página do formulário.</p>
+        <p style="margin-top:16px; font-size:14px;">⚠️ Não feche o Meet nem esta página principal durante a prova.</p>
       </div>
     </div>
   </div>
-
-  <!-- ABA MEET -->
-  <div class="conteudo-aba" id="aba-meet">
-    <div class="aviso" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-      <h2>📹 Videoconferência</h2>
-      <p>Agora, entre no Google Meet para aguardar as instruções do examinador.</p>
-      <p>Durante o Meet, o professor avisará quando o formulário for liberado.</p>
-      <p>Quando isso acontecer, basta <strong>atualizar a página do formulário</strong> que você abriu antes.</p>
-      <button class="botao botao-meet" onclick="abrirMeet()">🎥 Entrar no Google Meet</button>
-
-      <div class="instrucoes">
-        <ul>
-          <li>✓ Mantenha sua câmera ligada durante toda a prova.</li>
-          <li>✓ Não feche o formulário nem esta aba.</li>
-          <li>✓ Após o aviso do professor, atualize o formulário para começar a responder.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
-let formAberto = false;
+  // Flags de controle
+  let docAberto = false;
+  let meetAberto = false;
+  let provaIniciada = false;
 
-function abrirForms() {
-  window.open(
-    'https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform',
-    '_blank',
-    'width=1000,height=800'
-  );
-  formAberto = true;
-  document.getElementById('abaMeet').classList.remove('desabilitada');
-  alert("✅ Formulário aberto!\nAgora clique em 'Entrar no Google Meet' para continuar.");
-}
+  // Links (troque pelos seus se desejar)
+  const DOC_LOGIN = 'https://docs.google.com/document/d/1BySZqBtpl7LH1sygDTZzAICh6l53ThRdXwyhE5mvFFE/edit?tab=t.0';
+  const MEET_LINK = 'https://meet.google.com/ppj-mwvr-mbe';
+  const FORM_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform';
 
-function abrirMeet() {
-  if (!formAberto) {
-    alert('⚠️ Você precisa abrir o formulário primeiro!');
-    return;
+  function abrirDoc() {
+    // Abre o documento para forçar o login
+    window.open(DOC_LOGIN, '_blank', 'width=1000,height=800');
+    docAberto = true;
+
+    // Atualiza instruções visuais
+    document.getElementById('p1').style.opacity = '1';
+    // Habilita botão do Meet
+    document.getElementById('abaMeetBtn').classList.remove('desabilitada');
+    alert('Documento aberto. Se necessário, faça login na conta Google nessa nova janela. Depois volte e clique em "Entrar no Google Meet".');
   }
-  window.open(
-    'https://meet.google.com/ppj-mwvr-mbe',
-    '_blank',
-    'width=1200,height=800'
-  );
-  trocarAba('meet');
-}
 
-function trocarAba(aba) {
-  document.querySelectorAll('.aba-botao').forEach(btn => btn.classList.remove('ativa-aba'));
-  document.querySelectorAll('.conteudo-aba').forEach(conteudo => conteudo.classList.remove('ativa-aba'));
+  function abrirMeet() {
+    if (!docAberto) {
+      alert('⚠️ Abra o documento primeiro para autenticar na sua conta Google.');
+      return;
+    }
+    window.open(MEET_LINK, '_blank', 'width=1200,height=800');
+    meetAberto = true;
+    document.getElementById('p2').style.opacity = '1';
 
-  if (aba === 'prova') {
-    document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
-    document.getElementById('aba-prova').classList.add('ativa-aba');
-  } else if (aba === 'meet') {
-    document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
-    document.getElementById('aba-meet').classList.add('ativa-aba');
+    // Após abrir o Meet, habilita a aba/prova (para abrir o formulário)
+    document.getElementById('abaProvaBtn').classList.remove('desabilitada');
+
+    // Mostra instrução adicional
+    alert('Meet aberto. Aguarde instruções do professor. Quando ele liberar, clique em "Abrir Formulário da Prova" (botão "Formulário").');
+    // Muda para a aba do Meet
+    trocarAba('meet');
   }
-}
 
-// Bloqueios básicos
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('keydown', e => {
-  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
-    e.preventDefault();
+  function abrirForms() {
+    if (!meetAberto) {
+      alert('⚠️ Você precisa entrar no Google Meet antes de abrir o formulário.');
+      return;
+    }
+    const confirmar = confirm('Deseja abrir o formulário agora? Lembre-se: se ele estiver bloqueado, aguarde o aviso no Meet e então atualize a página do formulário.');
+    if (!confirmar) return;
+
+    window.open(FORM_LINK, '_blank', 'width=1000,height=800');
+    provaIniciada = true;
+    document.getElementById('p3').style.opacity = '1';
+    trocarAba('prova');
   }
-});
+
+  // Função para alternar abas internas
+  function trocarAba(aba) {
+    // Se tentar ir para a aba prova sem ter iniciado, bloqueia
+    if (aba === 'prova' && !provaIniciada) {
+      // Se a aba for a da prova mas o formulário não foi aberto, oferecemos abrir o formulário (ajuste de UX)
+      if (!document.getElementById('abaProvaBtn').classList.contains('desabilitada')) {
+        // botão formulário habilitado — podemos abrir o formulário
+        const abrir = confirm('Deseja abrir o formulário agora?');
+        if (abrir) { abrirForms(); return; }
+      }
+      alert('⚠️ Você precisa abrir o formulário através do botão apropriado antes de acessar a aba "Prova".');
+      return;
+    }
+
+    // Remove classes ativas
+    document.querySelectorAll('.aba-botao').forEach(btn => btn.classList.remove('ativa-aba'));
+    document.querySelectorAll('.conteudo-aba').forEach(c => c.classList.remove('ativa-aba'));
+
+    // Define active
+    if (aba === 'login') {
+      document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
+      document.getElementById('aba-login').classList.add('ativa-aba');
+    } else if (aba === 'meet') {
+      document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
+      document.getElementById('aba-meet').classList.add('ativa-aba');
+    } else if (aba === 'prova') {
+      document.querySelector('.aba-botao:nth-child(3)').classList.add('ativa-aba');
+      document.getElementById('aba-prova').classList.add('ativa-aba');
+    }
+  }
+
+  // Bloqueios básicos (não garantem segurança total no SEB, mas atrapalham inspeção casual)
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
+      e.preventDefault();
+    }
+  });
+
+  // Expor função abrirForms no escopo global para possibilitar uso via prompt se o usuário for para a aba Prova
+  window.abrirForms = abrirForms;
 </script>
-
 </body>
 </html>
