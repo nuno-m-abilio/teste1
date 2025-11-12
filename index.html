@@ -17,79 +17,10 @@
             background-color: #f0f0f0;
         }
         
-        .container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-        }
-        
-        .etapa {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-        }
-        
-        .etapa.ativa {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        iframe {
-            width: 100%;
-            flex: 1;
-            border: none;
-        }
-        
-        .info {
-            padding: 15px;
-            background-color: #4285f4;
-            color: white;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        .botao-container {
-            padding: 20px;
-            background-color: #1a73e8;
-            text-align: center;
-        }
-        
-        button {
-            padding: 15px 40px;
-            font-size: 18px;
-            background-color: white;
-            color: #1a73e8;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        button:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
-        }
-        
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        /* Versão com abas */
         .abas {
-            display: none;
+            display: flex;
             height: 100vh;
             flex-direction: column;
-        }
-        
-        .abas.ativa {
-            display: flex;
         }
         
         .menu-abas {
@@ -126,13 +57,12 @@
             display: block;
         }
         
-        /* Aviso do Meet */
         .aviso-meet {
             padding: 30px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-align: center;
-            min-height: 200px;
+            min-height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -141,68 +71,61 @@
         
         .aviso-meet h2 {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 28px;
         }
         
         .aviso-meet p {
             margin-bottom: 15px;
             font-size: 16px;
             max-width: 600px;
+            line-height: 1.6;
         }
         
         .link-meet {
             display: inline-block;
             margin-top: 20px;
-            padding: 12px 30px;
+            padding: 15px 40px;
             background-color: white;
             color: #667eea;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
+            font-size: 18px;
             transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
         
         .link-meet:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
+        
+        .instrucoes {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            max-width: 500px;
+        }
+        
+        .instrucoes ul {
+            text-align: left;
+            list-style-position: inside;
+        }
+        
+        .instrucoes li {
+            margin: 10px 0;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <!-- OPÇÃO 1: MODO SEQUENCIAL COM REDIRECIONAMENTO -->
-    <div class="container" id="modoSequencial">
-        <!-- Etapa 1: Aviso do Meet -->
-        <div class="etapa ativa" id="etapa1">
-            <div class="aviso-meet">
-                <h2>📹 Etapa 1: Videoconferência</h2>
-                <p>Clique no botão abaixo para entrar no Google Meet.</p>
-                <p><strong>Importante:</strong> Mantenha sua câmera ligada durante toda a prova.</p>
-                <p>Após entrar no Meet e receber as instruções do professor, volte para esta aba e clique em "Iniciar Prova".</p>
-                <a href="https://meet.google.com/ppj-mwvr-mbe" target="_blank" class="link-meet" id="linkMeet">
-                    Entrar no Google Meet
-                </a>
-            </div>
-            <div class="botao-container">
-                <button onclick="avancarParaForms()" id="btnAvancar">
-                    Iniciar Prova →
-                </button>
-            </div>
-        </div>
-        
-        <!-- Etapa 2: Google Forms -->
-        <div class="etapa" id="etapa2">
-            <div class="info">
-                📝 Prova em Andamento - Responda todas as questões
-            </div>
-            <iframe 
-                id="formsFrame"
-                src="https://docs.google.com/forms/d/1kTlzkB5ns2bSTp0LFyWxQ3cZw5Eb2sPCBkSNjb1vYgc/edit">
-            </iframe>
-        </div>
-    </div>
-    
-    <!-- OPÇÃO 2: MODO COM ABAS (alternativa) -->
-    <div class="abas" id="modoAbas">
+    <div class="abas">
         <div class="menu-abas">
             <button class="aba-botao ativa-aba" onclick="trocarAba('meet')">
                 📹 Google Meet
@@ -214,63 +137,32 @@
         
         <div class="conteudo-aba ativa-aba" id="aba-meet">
             <div class="aviso-meet">
-                <h2>📹 Google Meet</h2>
-                <p>Clique no botão abaixo para entrar na videoconferência.</p>
-                <p><strong>Atenção:</strong> O Meet abrirá em uma nova aba. Mantenha-a aberta durante toda a prova.</p>
+                <h2>📹 Videoconferência</h2>
+                <p>Bem-vindo(a) ao ambiente de prova online!</p>
+                <p><strong>Primeiro passo:</strong> Entre no Google Meet clicando no botão abaixo.</p>
+                
                 <a href="https://meet.google.com/ppj-mwvr-mbe" target="_blank" class="link-meet">
-                    Entrar no Google Meet
+                    🎥 Entrar no Google Meet
                 </a>
-                <p style="margin-top: 30px; font-size: 14px;">
-                    Após entrar no Meet, clique na aba "Prova" acima para iniciar.
-                </p>
+                
+                <div class="instrucoes">
+                    <p style="font-weight: bold; margin-bottom: 15px;">⚠️ Instruções Importantes:</p>
+                    <ul>
+                        <li>✓ Mantenha sua câmera LIGADA durante toda a prova</li>
+                        <li>✓ Aguarde as instruções do professor no Meet</li>
+                        <li>✓ Após autorização, clique na aba "📝 Prova" acima</li>
+                        <li>✓ NÃO feche a janela do Meet</li>
+                    </ul>
+                </div>
             </div>
         </div>
         
         <div class="conteudo-aba" id="aba-prova">
-            <iframe src="https://docs.google.com/forms/d/1kTlzkB5ns2bSTp0LFyWxQ3cZw5Eb2sPCBkSNjb1vYgc/edit" style="width: 100%; height: 100%; border: none;"></iframe>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform?usp=dialog"></iframe>
         </div>
     </div>
 
     <script>
-        // CONFIGURAÇÃO: Escolha o modo
-        const MODO = 'abas'; // Opções: 'sequencial' ou 'abas'
-        
-        // URLs (configure aqui)
-        const URL_MEET = 'https://meet.google.com/ppj-mwvr-mbe';
-        const URL_FORMS = 'https://docs.google.com/forms/d/1kTlzkB5ns2bSTp0LFyWxQ3cZw5Eb2sPCBkSNjb1vYgc/edit';
-        
-        // Aplica as URLs
-        document.querySelectorAll('[href="https://meet.google.com/ppj-mwvr-mbe"]').forEach(el => {
-            el.href = URL_MEET;
-        });
-        document.querySelectorAll('[src="https://docs.google.com/forms/d/1kTlzkB5ns2bSTp0LFyWxQ3cZw5Eb2sPCBkSNjb1vYgc/edit"]').forEach(el => {
-            el.src = URL_FORMS;
-        });
-        
-        // Controla qual modo mostrar
-        if (MODO === 'abas') {
-            document.getElementById('modoSequencial').style.display = 'none';
-            document.getElementById('modoAbas').classList.add('ativa');
-        }
-        
-        // MODO SEQUENCIAL
-        function avancarParaForms() {
-            const confirmar = confirm(
-                'Tem certeza que deseja iniciar a prova?\n\n' +
-                'Certifique-se de que:\n' +
-                '✓ Entrou no Google Meet\n' +
-                '✓ Sua câmera está ligada\n' +
-                '✓ Recebeu as instruções do professor\n\n' +
-                'Não será possível voltar!'
-            );
-            
-            if (confirmar) {
-                document.getElementById('etapa1').classList.remove('ativa');
-                document.getElementById('etapa2').classList.add('ativa');
-            }
-        }
-        
-        // MODO ABAS
         function trocarAba(aba) {
             // Remove classe ativa de todos
             document.querySelectorAll('.aba-botao').forEach(btn => {
@@ -285,8 +177,23 @@
                 document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
                 document.getElementById('aba-meet').classList.add('ativa-aba');
             } else if (aba === 'prova') {
-                document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
-                document.getElementById('aba-prova').classList.add('ativa-aba');
+                // Confirmação antes de abrir a prova
+                const confirmar = confirm(
+                    'Iniciar a prova agora?\n\n' +
+                    'Certifique-se de que:\n' +
+                    '✓ Você entrou no Google Meet\n' +
+                    '✓ Sua câmera está ligada\n' +
+                    '✓ Recebeu autorização do professor'
+                );
+                
+                if (confirmar) {
+                    document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
+                    document.getElementById('aba-prova').classList.add('ativa-aba');
+                } else {
+                    // Mantém na aba do Meet
+                    document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
+                    document.getElementById('aba-meet').classList.add('ativa-aba');
+                }
             }
         }
         
