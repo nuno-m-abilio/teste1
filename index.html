@@ -5,190 +5,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exame Online</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        margin: 0;
-        overflow: hidden;
-    }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; overflow: hidden; background-color: #f0f0f0; }
 
-    .abas {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
+.abas { display: flex; height: 100vh; flex-direction: column; }
+.menu-abas { display: flex; background-color: #1a73e8; }
 
-    .menu-abas {
-        display: flex;
-        background-color: #1a73e8;
-    }
+.aba-botao {
+  flex: 1;
+  padding: 15px;
+  background-color: #1557b0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.aba-botao.ativa-aba { background-color: #1a73e8; }
+.aba-botao:hover:not(.desabilitada) { background-color: #1670d8; }
+.aba-botao.desabilitada { opacity: 0.5; cursor: not-allowed; }
 
-    .aba-botao {
-        flex: 1;
-        padding: 15px;
-        background-color: #1557b0;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-        font-weight: bold;
-    }
+.conteudo-aba { flex: 1; display: none; }
+.conteudo-aba.ativa-aba { display: block; }
 
-    .aba-botao.ativa-aba { background-color: #1a73e8; }
-    .aba-botao.desabilitada { opacity: 0.5; cursor: not-allowed; }
+.aviso {
+  padding: 30px;
+  background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
+  color: white;
+  text-align: center;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.aviso h2 { margin-bottom: 20px; font-size: 28px; }
+.aviso p { margin-bottom: 15px; font-size: 16px; max-width: 600px; line-height: 1.6; }
 
-    .conteudo-aba { flex: 1; display: none; }
-    .conteudo-aba.ativa-aba { display: block; }
+.botao {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 15px 40px;
+  background-color: white;
+  color: #34a853;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 18px;
+  transition: all 0.3s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.botao:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 
-    .aviso-meet {
-        padding: 30px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        text-align: center;
-        min-height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+.botao-meet {
+  color: #667eea;
+  background-color: white;
+}
+.botao-meet:hover { color: #5a5ae0; }
 
-    .aviso-meet h2 { margin-bottom: 20px; font-size: 28px; }
-    .aviso-meet p { margin-bottom: 15px; max-width: 600px; line-height: 1.6; }
+.instrucoes {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  max-width: 500px;
+}
+.instrucoes ul { text-align: left; list-style-position: inside; }
+.instrucoes li { margin: 10px 0; }
 
-    .botao {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 15px 40px;
-        background-color: white;
-        color: #667eea;
-        border: none;
-        border-radius: 5px;
-        font-weight: bold;
-        font-size: 18px;
-        transition: all 0.3s;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        cursor: pointer;
-    }
-
-    .botao:hover { transform: scale(1.05); }
-    .botao.desabilitado { opacity: 0.5; cursor: not-allowed; }
-    .botao.verde { color: #34a853; }
-
-    .instrucoes {
-        margin-top: 30px;
-        padding: 20px;
-        background-color: rgba(255,255,255,0.1);
-        border-radius: 10px;
-        max-width: 500px;
-    }
-
-    ul { list-style-position: inside; text-align: left; }
-    li { margin: 10px 0; }
+iframe { width: 100%; height: 100%; border: none; }
 </style>
 </head>
 <body>
+
 <div class="abas">
-    <div class="menu-abas">
-        <button class="aba-botao ativa-aba" onclick="trocarAba('meet')">📹 Google Meet</button>
-        <button class="aba-botao desabilitada" id="abaProva" onclick="trocarAba('prova')">📝 Prova</button>
+  <div class="menu-abas">
+    <button class="aba-botao ativa-aba" onclick="trocarAba('prova')">📝 Formulário</button>
+    <button class="aba-botao desabilitada" id="abaMeet" onclick="trocarAba('meet')">📹 Google Meet</button>
+  </div>
+
+  <!-- ABA FORMULÁRIO -->
+  <div class="conteudo-aba ativa-aba" id="aba-prova">
+    <div class="aviso" style="background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);">
+      <h2>📝 Acesso ao Formulário</h2>
+      <p>Primeiro, você deve acessar o formulário da prova. Isso fará com que você entre na sua conta Google.</p>
+      <p><strong>Importante:</strong> Inicialmente o formulário estará bloqueado e <u>não aceitará respostas</u>. Isso é normal!</p>
+      <p>Depois de acessar, volte aqui e clique em “Entrar no Google Meet”.</p>
+      <button class="botao" onclick="abrirForms()">📝 Abrir Formulário</button>
+
+      <div class="instrucoes">
+        <p style="font-weight: bold; margin-bottom: 15px;">⚠️ Instruções Importantes:</p>
+        <ul>
+          <li>✓ Acesse o formulário e faça login na sua conta Google.</li>
+          <li>✓ O formulário pode exibir “Não está aceitando respostas”.</li>
+          <li>✓ Isso será liberado durante o exame.</li>
+          <li>✓ Após o login, clique em “Entrar no Google Meet”.</li>
+        </ul>
+      </div>
     </div>
+  </div>
 
-    <div class="conteudo-aba ativa-aba" id="aba-meet">
-        <div class="aviso-meet">
-            <h2>📚 Acesso ao Exame Online</h2>
-            <p>Antes de começar, siga as etapas na ordem correta.</p>
+  <!-- ABA MEET -->
+  <div class="conteudo-aba" id="aba-meet">
+    <div class="aviso" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <h2>📹 Videoconferência</h2>
+      <p>Agora, entre no Google Meet para aguardar as instruções do examinador.</p>
+      <p>Durante o Meet, o professor avisará quando o formulário for liberado.</p>
+      <p>Quando isso acontecer, basta <strong>atualizar a página do formulário</strong> que você abriu antes.</p>
+      <button class="botao botao-meet" onclick="abrirMeet()">🎥 Entrar no Google Meet</button>
 
-            <button class="botao" id="btnLogin" onclick="fazerLogin()">🔐 Fazer login no Google</button>
-            <button class="botao desabilitado" id="btnMeet" onclick="abrirMeet()">🎥 Entrar no Google Meet</button>
-            <button class="botao verde desabilitado" id="btnForms" onclick="abrirForms()">📝 Abrir Formulário da Prova</button>
-
-            <div class="instrucoes">
-                <p style="font-weight:bold;margin-bottom:15px;">⚠️ Instruções:</p>
-                <ul>
-                    <li id="passo1" style="opacity:0.5;">Fazer login no Google</li>
-                    <li id="passo2" style="opacity:0.5;">Entrar no Google Meet e manter a câmera ligada</li>
-                    <li id="passo3" style="opacity:0.5;">Aguardar as instruções do professor</li>
-                    <li id="passo4" style="opacity:0.5;">Abrir o Formulário da Prova</li>
-                </ul>
-            </div>
-        </div>
+      <div class="instrucoes">
+        <ul>
+          <li>✓ Mantenha sua câmera ligada durante toda a prova.</li>
+          <li>✓ Não feche o formulário nem esta aba.</li>
+          <li>✓ Após o aviso do professor, atualize o formulário para começar a responder.</li>
+        </ul>
+      </div>
     </div>
-
-    <div class="conteudo-aba" id="aba-prova">
-        <div class="aviso-meet" style="background:linear-gradient(135deg,#34a853 0%,#0f9d58 100%);">
-            <h2>📝 Prova em Andamento</h2>
-            <p>O formulário foi aberto em nova janela. Mantenha o Meet e a câmera ligados.</p>
-        </div>
-    </div>
+  </div>
 </div>
 
 <script>
-    let loginFeito = false;
-    let meetAberto = false;
-    let provaIniciada = false;
+let formAberto = false;
 
-    function fazerLogin() {
-        window.open('https://accounts.google.com', '_blank', 'width=800,height=700');
-        alert('Após fazer login na nova janela, volte aqui e clique em "OK" para continuar.');
-        loginFeito = true;
+function abrirForms() {
+  window.open(
+    'https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform',
+    '_blank',
+    'width=1000,height=800'
+  );
+  formAberto = true;
+  document.getElementById('abaMeet').classList.remove('desabilitada');
+  alert("✅ Formulário aberto!\nAgora clique em 'Entrar no Google Meet' para continuar.");
+}
 
-        document.getElementById('btnMeet').classList.remove('desabilitado');
-        document.getElementById('passo1').style.opacity = '1';
-    }
+function abrirMeet() {
+  if (!formAberto) {
+    alert('⚠️ Você precisa abrir o formulário primeiro!');
+    return;
+  }
+  window.open(
+    'https://meet.google.com/ppj-mwvr-mbe',
+    '_blank',
+    'width=1200,height=800'
+  );
+  trocarAba('meet');
+}
 
-    function abrirMeet() {
-        if (!loginFeito) {
-            alert('⚠️ Faça login no Google primeiro!');
-            return;
-        }
+function trocarAba(aba) {
+  document.querySelectorAll('.aba-botao').forEach(btn => btn.classList.remove('ativa-aba'));
+  document.querySelectorAll('.conteudo-aba').forEach(conteudo => conteudo.classList.remove('ativa-aba'));
 
-        window.open('https://meet.google.com/ppj-mwvr-mbe', '_blank', 'width=1200,height=800');
-        meetAberto = true;
+  if (aba === 'prova') {
+    document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
+    document.getElementById('aba-prova').classList.add('ativa-aba');
+  } else if (aba === 'meet') {
+    document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
+    document.getElementById('aba-meet').classList.add('ativa-aba');
+  }
+}
 
-        document.getElementById('btnForms').classList.remove('desabilitado');
-        document.getElementById('passo2').style.opacity = '1';
-        document.getElementById('passo3').style.opacity = '1';
-    }
-
-    function abrirForms() {
-        if (!meetAberto) {
-            alert('⚠️ Entre no Google Meet primeiro!');
-            return;
-        }
-
-        const confirmar = confirm('Tem certeza de que deseja iniciar a prova agora?');
-        if (!confirmar) return;
-
-        provaIniciada = true;
-        document.getElementById('abaProva').classList.remove('desabilitada');
-        window.open('https://docs.google.com/forms/d/e/1FAIpQLSc7V47uP4jvP6KR1VMRCQDJ5vi86defPL7QFbPJgW4R99LYCw/viewform', '_blank', 'width=1000,height=800');
-        trocarAba('prova');
-        document.getElementById('passo4').style.opacity = '1';
-    }
-
-    function trocarAba(aba) {
-        if (aba === 'prova' && !provaIniciada) {
-            alert('⚠️ Você precisa iniciar a prova antes!');
-            return;
-        }
-
-        document.querySelectorAll('.aba-botao').forEach(b => b.classList.remove('ativa-aba'));
-        document.querySelectorAll('.conteudo-aba').forEach(c => c.classList.remove('ativa-aba'));
-
-        if (aba === 'meet') {
-            document.querySelector('.aba-botao:nth-child(1)').classList.add('ativa-aba');
-            document.getElementById('aba-meet').classList.add('ativa-aba');
-        } else {
-            document.querySelector('.aba-botao:nth-child(2)').classList.add('ativa-aba');
-            document.getElementById('aba-prova').classList.add('ativa-aba');
-        }
-    }
-
-    // Bloqueia menu direito e inspeção
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('keydown', e => {
-        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
-    });
+// Bloqueios básicos
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) {
+    e.preventDefault();
+  }
+});
 </script>
+
 </body>
 </html>
